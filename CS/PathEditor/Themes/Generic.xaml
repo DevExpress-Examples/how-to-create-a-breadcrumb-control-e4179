@@ -1,0 +1,36 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:PathEditor">
+    <local:MyVisibilityConverter x:Key="myVisibilityConverter"/>
+    <Style TargetType="{x:Type local:BreadcrumbControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:BreadcrumbControl}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid Background="#FFCCCC">
+                            <TextBox Text="{Binding Path=Text, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:BreadcrumbControl}}, Mode=TwoWay}" Name="textBox"/>
+                            <ItemsControl Name="itemsControl"  Height="23" ItemsSource="{Binding Path=PathItems, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:BreadcrumbControl}}}" Visibility="{Binding ElementName=textBox, Path=IsFocused, Converter={StaticResource myVisibilityConverter}}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation ="Horizontal">
+                                            <Button Width="{Binding Folder}" Height="23" Content="{Binding Folder}" Command="{Binding ClickCommand}" CommandParameter="{Binding FullPathToFolder}"/>
+                                            <ComboBox Width="18" Height="23" ItemsSource="{Binding Dirs}" SelectedItem="{Binding selectedItem, Mode=OneWayToSource}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
